@@ -28,21 +28,21 @@
 ;;; I keep my `.emacs` in source control, and use the same defaults on all
 ;;; the machines I use. However, I like to have different themes on
 ;;; different machines.
-;;;  
-;;; To help me do this automatically I've created this little feature that
+;;; 
+;;; To help me do this automatically, I've created this little feature that
 ;;; remembers the current theme when Emacs closes, and loads it again when
 ;;; you start up.
-;;;  
+;;; 
 ;;; If you install via elpa (marmalade repo) everything is set up for you
 ;;; automatically.
-;;;  
+;;; 
 ;;; Just install with: `M-x package-install remember-theme`
 ;;;
 
 (defun remember-theme-save ()
-  "Creates or modifies a file .emacs-theme in the load-path, and
-stores the name of the current Emacs theme, for retrieval by
-load-theme-last"
+  "Creates (or replaces) ~/.emacs-theme, and stores the name of
+the current Emacs theme, for retrieval by remember-theme-load"
+  (delete-file "~/.emacs-theme")
   (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes)))
                   nil
                   "~/.emacs-theme"))
@@ -52,10 +52,8 @@ load-theme-last"
 ~/.emacs-theme. The last line of .emacs-theme is read as the
 theme name.
 
-The file is created and updated by remember-theme-last
-
-The theme must be valid, and already available in the
-custom-theme-load-path"
+~/.emacs-theme is created by remember-theme-save manually
+creating or editing this file is not supported"
   (and (file-exists-p "~/.emacs-theme")
       (load-theme (intern (car (nreverse (with-temp-buffer
                                            (insert-file-contents "~/.emacs-theme")
