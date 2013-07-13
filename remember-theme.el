@@ -23,27 +23,21 @@
 ;;;
 ;;; Commentary:
 ;;;
-;;; Assuming that you version your .emacs with git (etc), you may not
-;;; want to keep some of these defaults versioned. Personally I don't
-;;; want to use the same theme everywhere, for example on a terminal
-;;; session, one theme looks better, or perhaps on two different
-;;; machines I want an at a glance difference.
+;;; Emacs Remember Theme
+;;;  
+;;; I keep my `.emacs` in source control, and use the same defaults on all
+;;; the machines I use. However, I like to have different themes on
+;;; different machines.
+;;;  
+;;; To help me do this automatically I've created this little feature that
+;;; remembers the current theme when Emacs closes, and loads it again when
+;;; you start up.
+;;;  
+;;; If you install via elpa (marmalade repo) everything is set up for you
+;;; automatically.
+;;;  
+;;; Just install with: `M-x package-install remember-theme`
 ;;;
-;;; To help me with this problem, I've written two simple function
-;;; which save and load the current theme name to ~/.emacs-theme
-;;; (notably, outside of ~/.emacs.d)
-;;;
-;;; Using it is simply a case of requiring the library
-;;;
-;;;    (require 'remember-theme)
-;;;
-;;; Which will automatically add remember-theme-load to the
-;;; after-init-hook and remember-theme-save to the kill-emacs-hook
-;;;
-;;; Installing via elpa (marmalade repo) will automatically set this
-;;; up for you
-;;;
-;;;    package-install remember-theme
 
 (defun remember-theme-save ()
   "Creates or modifies a file .emacs-theme in the load-path, and
