@@ -2,9 +2,10 @@
 ;;;
 ;;; Author: Jason Milkins <jasonm23@gmail.com>
 ;;; Url: https://github.com/jasonm23/emacs-remember-theme
-;;; Version: 0.1.0
+;;; Version: 0.1.1
 ;;;
 ;;; Changelog :
+;;;     0.1.1 : fix autoloads
 ;;;     0.1.0 : Init
 ;;;
 ;;; This program is free software: you can redistribute it and/or modify
