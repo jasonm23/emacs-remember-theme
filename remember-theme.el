@@ -2,7 +2,7 @@
 ;;;
 ;;; Author: Jason Milkins <jasonm23@gmail.com>
 ;;; Url: https://github.com/jasonm23/emacs-remember-theme
-;;; Version: 0.1.1
+;;; Version: 0.1.2
 ;;;
 ;;; Changelog :
 ;;;     0.1.2 : Fix bug for non existent .emacs-theme
