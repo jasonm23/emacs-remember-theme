@@ -5,7 +5,8 @@
 ;;; Version: 0.1.1
 ;;;
 ;;; Changelog :
-;;;     0.1.1 : fix autoloads
+;;;     0.1.2 : Fix bug for non existent .emacs-theme
+;;;     0.1.1 : Fix autoloads
 ;;;     0.1.0 : Init
 ;;;
 ;;; This program is free software: you can redistribute it and/or modify
@@ -45,7 +46,8 @@
 (defun remember-theme-save ()
   "Creates (or replaces) ~/.emacs-theme, and stores the name of
 the current Emacs theme, for retrieval by remember-theme-load"
-  (delete-file "~/.emacs-theme")
+  (when (file-exists-p "~/.emacs-theme")
+    (delete-file "~/.emacs-theme"))
   (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes)))
                   nil
                   "~/.emacs-theme"))
