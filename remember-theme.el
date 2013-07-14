@@ -39,6 +39,8 @@
 ;;; Just install with: `M-x package-install remember-theme`
 ;;;
 
+
+;;;###autoload
 (defun remember-theme-save ()
   "Creates (or replaces) ~/.emacs-theme, and stores the name of
 the current Emacs theme, for retrieval by remember-theme-load"
@@ -47,6 +49,7 @@ the current Emacs theme, for retrieval by remember-theme-load"
                   nil
                   "~/.emacs-theme"))
 
+;;;###autoload
 (defun remember-theme-load ()
   "Load the theme used last - This is stored in the file
 ~/.emacs-theme. The last line of .emacs-theme is read as the
