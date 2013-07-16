@@ -2,12 +2,18 @@
 ;;;
 ;;; Author: Jason Milkins <jasonm23@gmail.com>
 ;;; Url: https://github.com/jasonm23/emacs-remember-theme
-;;; Version: 0.1.2
+;;; Version: 20130716.311
 ;;;
 ;;; Changelog :
-;;;     0.1.2 : Fix bug for non existent .emacs-theme
-;;;     0.1.1 : Fix autoloads
-;;;     0.1.0 : Init
+;;;
+;;; 20130716.311 : Unload all loaded themes before loading the
+;;; remembered theme.
+;;;
+;;;        0.1.2 : Fix bug for non existent .emacs-theme
+;;;
+;;;        0.1.1 : Fix autoloads
+;;;
+;;;        0.1.0 : Init
 ;;;
 ;;; This program is free software: you can redistribute it and/or modify
 ;;; it under the terms of the GNU General Public License as published by
@@ -60,7 +66,10 @@ theme name.
 
 ~/.emacs-theme is created by remember-theme-save manually
 creating or editing this file is not supported"
-  (and (file-exists-p "~/.emacs-theme")
+  (loop for theme
+        in custome-enabled-themes
+        do (disable-theme theme))
+  (when (file-exists-p "~/.emacs-theme")
       (load-theme (intern (car (nreverse (with-temp-buffer
                                            (insert-file-contents "~/.emacs-theme")
                                            (split-string
