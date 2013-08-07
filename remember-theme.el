@@ -2,7 +2,7 @@
 
 ;; Author: Jason Milkins <jasonm23@gmail.com>
 ;; Url: https://github.com/jasonm23/emacs-remember-theme
-;; Version: 20130718.230
+;; Version: 20130807.1251
 
 ;;; Commentary:
 
@@ -22,6 +22,9 @@
 ;; Install with: `M-x package-install remember-theme`
 
 ;; Changelog:
+;; 20130807.1251
+;; * Conditional execution (no theme, no save)
+;; *
 ;; 20130718.230
 ;; * Updated documentation/header
 ;; 20130716.1310
@@ -58,11 +61,10 @@
 (defun remember-theme-save ()
   "Creates (or replaces) ~/.emacs-theme, and stores the name of
 the current Emacs theme, for retrieval by remember-theme-load"
-  (when (file-exists-p "~/.emacs-theme")
-    (delete-file "~/.emacs-theme"))
-  (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes)))
-                  nil
-                  "~/.emacs-theme"))
+  (when (> (length custom-enabled-themes) 0)
+    (when (file-exists-p "~/.emacs-theme")
+      (delete-file "~/.emacs-theme"))
+    (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes))) "" "~/.emacs-theme")))
 
 ;;;###autoload
 (defun remember-theme-load ()
