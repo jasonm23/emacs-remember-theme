@@ -57,6 +57,8 @@
 
 ;;; Code:
 
+(defvar remember-theme-load-force nil)
+
 ;;;###autoload
 (defun remember-theme-save ()
   "Creates (or replaces) ~/.emacs-theme, and stores the name of
@@ -81,7 +83,7 @@ creating or editing this file is not supported"
       (load-theme (intern (car (nreverse (with-temp-buffer
                                            (insert-file-contents "~/.emacs-theme")
                                            (split-string
-                                            (buffer-string)))))))))
+                                            (buffer-string)))))) remember-theme-load-force)))
 
 ;;;###autoload
 (when load-file-name
