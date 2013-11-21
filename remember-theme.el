@@ -57,14 +57,16 @@
 
 ;;; Code:
 
+(defvar remember-theme-path "~/.emacs-theme")
+
 ;;;###autoload
 (defun remember-theme-save ()
   "Creates (or replaces) ~/.emacs-theme, and stores the name of
 the current Emacs theme, for retrieval by remember-theme-load"
   (when (> (length custom-enabled-themes) 0)
-    (when (file-exists-p "~/.emacs-theme")
-      (delete-file "~/.emacs-theme"))
-    (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes))) "" "~/.emacs-theme")))
+    (when (file-exists-p remember-theme-path)
+      (delete-file remember-theme-path))
+    (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes))) "" remember-theme-path)))
 
 ;;;###autoload
 (defun remember-theme-load ()
@@ -77,9 +79,9 @@ creating or editing this file is not supported"
   (loop for theme
         in custom-enabled-themes
         do (disable-theme theme))
-  (when (file-exists-p "~/.emacs-theme")
+  (when (file-exists-p remember-theme-path)
       (load-theme (intern (car (nreverse (with-temp-buffer
-                                           (insert-file-contents "~/.emacs-theme")
+                                           (insert-file-contents remember-theme-path)
                                            (split-string
                                             (buffer-string)))))))))
 
