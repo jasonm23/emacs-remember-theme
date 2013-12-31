@@ -2,7 +2,7 @@
 
 ;; Author: Jason Milkins <jasonm23@gmail.com>
 ;; Url: https://github.com/jasonm23/emacs-remember-theme
-;; Version: 20131215.0441
+;; Version: 20131231.0025
 
 ;;; Commentary:
 
@@ -22,8 +22,10 @@
 ;; Install with: `M-x package-install remember-theme`
 
 ;;; Changelog:
+;; 20131231.0025
+;; * Custom Variable to control location of remember-theme (defaults to ~/.emacs-theme)
 ;; 20131215.0441
-;; * Conditional execution (no .emacs-theme, no disable current theme(s) / no theme load attempt)
+;; * Conditional execution (no ~/.emacs-theme, no disable current theme(s) / no theme load attempt)
 ;; 20130807.1251
 ;; * Conditional execution (no theme, no save)
 ;; 20130718.230
@@ -57,39 +59,44 @@
 ;; This file is not a part of Emacs
 
 ;;; Code:
+(defgroup remember-theme nil
+  "Options controlling remember-theme")
+
+(defcustom remember-theme-file "~/.emacs-theme"
+  "Name/Location of the file which stores the current theme (file
+is updated on Emacs exit)"
+  :type '(file)
+  :group 'remember-theme)
 
 ;;;###autoload
 (defun remember-theme-save ()
-  "Creates (or replaces) ~/.emacs-theme, and stores the name of
-the current Emacs theme, for retrieval by remember-theme-load"
+  "Creates (or replaces) remember-theme-file (default ~/.emacs-theme), and stores the name of
+  the current Emacs theme, for retrieval by remember-theme-load"
   (when (> (length custom-enabled-themes) 0)
-    (when (file-exists-p "~/.emacs-theme")
-      (delete-file "~/.emacs-theme"))
-    (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes))) "" "~/.emacs-theme")))
+    (when (file-exists-p remember-theme-file)
+      (delete-file remember-theme-file))
+    (append-to-file (format "%s\n" (symbol-name (car custom-enabled-themes))) "" remember-theme-file)))
 
 ;;;###autoload
 (defun remember-theme-load ()
-  "Load the theme used last - This is stored in the file
-~/.emacs-theme. The last line of .emacs-theme is read as the
-theme name.
+  "Load the theme used last - This is stored in the
+  remember-theme-file. The last line of .emacs-theme is read as the
+  theme
 
-~/.emacs-theme is created by remember-theme-save manually
-creating or editing this file is not supported, (although if you
-do it right, it's fine!) Also if the theme is no longer available
-on this site, an error will be thrown. TODO: fix this later.
+  remember-theme-file (default ~/.emacs-theme) is created by
+  remember-theme-save. Don't manually create or edit this file.
 
-Currently enabled themes will be disabled and the theme name from
-~/.emacs-theme will be loaded.
+  Currently enabled themes will be disabled and the theme in
+  remember-theme-file will be loaded.
 
-If no ~/.emacs-theme file exists the operation is skipped, and
-any currently loaded theme(s) will be left enabled.
-"
-  (when (file-exists-p "~/.emacs-theme")
+  If no remember-theme-file exists the operation is skipped, and
+  any currently loaded theme(s) will be left enabled."
+  (when (file-exists-p remember-theme-file)
     (loop for theme
           in custom-enabled-themes
           do (disable-theme theme))
     (load-theme (intern (car (nreverse (with-temp-buffer
-                                         (insert-file-contents "~/.emacs-theme")
+                                         (insert-file-contents remember-theme-file)
                                          (split-string
                                           (buffer-string)))))))))
 
