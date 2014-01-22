@@ -12,6 +12,10 @@ To help me do this automatically, I've created this little feature that
 remembers the current theme when Emacs closes, and loads it again when
 you start up (clearing any other loaded themes first.)
 
+If you have things you'd like to run after the theme has loaded,
+use the hook provided, 'remember-theme-after-load-hook (see
+add-hook if you haven't used hooks before.
+
 ## Installation
 
 Install from the marmalade repo via elpa/pacakge.el, and everything
