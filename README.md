@@ -1,6 +1,6 @@
 # Emacs - Remember Theme
 
-#### Version: 20130718.230
+#### Version: 20140122.1500
 
 ## Commentary
 
@@ -21,6 +21,8 @@ Install with: `M-x package-install remember-theme`
 
 ### Changelog
 
+* 20140122.1500
+ * Add hook to run after theme loading
 * 20130718.230
  * Updated documentation/header
 * 20130716.1310
