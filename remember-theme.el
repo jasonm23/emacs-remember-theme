@@ -2,7 +2,7 @@
 
 ;; Author: Jason Milkins <jasonm23@gmail.com>
 ;; Url: https://github.com/jasonm23/emacs-remember-theme
-;; Version: 20131231.0025
+;; Version: 20140122.1500
 
 ;;; Commentary:
 
@@ -13,6 +13,10 @@
 ;; To help me do this automatically, I've created this little feature that
 ;; remembers the current theme when Emacs closes, and loads it again when
 ;; you start up (clearing any other loaded themes first.)
+;;
+;; If you have things you'd like to run after the theme has loaded,
+;; use the hook provided, 'remember-theme-after-load-hook (see
+;; add-hook if you haven't used hooks before.
 
 ;;; Installation:
 
@@ -22,6 +26,8 @@
 ;; Install with: `M-x package-install remember-theme`
 
 ;;; Changelog:
+;; 20140122.1500
+;; * Add custom hook to be run after loading the remembered theme
 ;; 20131231.0025
 ;; * Custom Variable to control location of remember-theme (defaults to ~/.emacs-theme)
 ;; 20131215.0441
@@ -68,6 +74,9 @@ is updated on Emacs exit)"
   :type '(file)
   :group 'remember-theme)
 
+(defvar remember-theme-after-load-hook nil
+  "Hook called after loading the remembered theme")
+
 ;;;###autoload
 (defun remember-theme-save ()
   "Creates (or replaces) remember-theme-file (default ~/.emacs-theme), and stores the name of
@@ -98,7 +107,8 @@ is updated on Emacs exit)"
     (load-theme (intern (car (nreverse (with-temp-buffer
                                          (insert-file-contents remember-theme-file)
                                          (split-string
-                                          (buffer-string)))))))))
+                                          (buffer-string)))))))
+    (run-hooks 'remember-theme-after-load-hook)))
 
 ;;;###autoload
 (when load-file-name
