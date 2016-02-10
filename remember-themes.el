@@ -83,7 +83,7 @@
 
 ;;;###autoload
 (defun remember-theme-read ()
-"Return first line from `remember-theme-emacs-dot-file'."
+  "Return first line from `remember-theme-emacs-dot-file'."
   (with-temp-buffer
     (insert-file-contents remember-theme-emacs-dot-file)
     (car (split-string (buffer-string) "\n" t))))
@@ -113,15 +113,13 @@ Any currently loaded themes will be disabled and the theme named in
 `remember-theme-emacs-dot-file' will be loaded.
 
 If no `remember-theme-emacs-dot-file' file exists the operation is skipped."
-    (when (file-exists-p remember-theme-emacs-dot-file)
-      (loop for theme
-            in custom-enabled-themes
-            do (disable-theme theme))
-      (let* ((theme-name (remember-theme-read))
-             (theme-symbol (intern theme-name)))
-        (unless (member theme-symbol custom-enabled-themes)
-          (require (intern (format "%s-theme" theme-name))))
-        (load-theme theme-symbol))
+  (when (file-exists-p remember-theme-emacs-dot-file)
+    (mapc 'disable-theme (custom-enabled-themes))
+    (let* ((theme-name (remember-theme-read))
+           (theme-symbol (intern theme-name)))
+      (unless (member theme-symbol custom-enabled-themes)
+        (require (intern (format "%s-theme" theme-name))))
+      (load-theme theme-symbol))
     (run-hooks 'remember-theme-after-load-hook)))
 
 (provide 'remember-themes)
