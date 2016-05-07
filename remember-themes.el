@@ -73,7 +73,8 @@
 ;;; Package-Requires: ((emacs "24.1"))
 
 ;;; Code:
-(require 'cl)
+(eval-when-compile
+  (require 'cl))
 
 (defvar remember-theme-emacs-dot-file "~/.emacs-theme"
   "location to store remembered theme.")
@@ -114,11 +115,11 @@ Any currently loaded themes will be disabled and the theme named in
 
 If no `remember-theme-emacs-dot-file' file exists the operation is skipped."
   (when (file-exists-p remember-theme-emacs-dot-file)
-    (mapc 'disable-theme (custom-enabled-themes))
+    (mapc 'disable-theme custom-enabled-themes)
     (let* ((theme-name (remember-theme-read))
            (theme-symbol (intern theme-name)))
       (unless (member theme-symbol custom-enabled-themes)
-        (require (intern (format "%s-theme" theme-name))))
+        (custom-available-themes))
       (load-theme theme-symbol))
     (run-hooks 'remember-theme-after-load-hook)))
 
