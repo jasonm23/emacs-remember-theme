@@ -1,8 +1,8 @@
 ;;; remember-themes.el --- Remembers the last theme in use and re-loads for the next session.
 
-;; Author: Jason Milkins <jasonm23@gmail.com>
+;; Authors: Jason Milkins <jasonm23@gmail.com>, Mark A. Hershberger <mah@everybody.org>
 ;; Url: https://github.com/jasonm23/emacs-remember-theme
-;; Version: 20160210.1644
+;; Version: 20160509.1303
 
 ;;; Commentary:
 
@@ -26,9 +26,12 @@
 ;; (remember-theme-load)
 ;; (add-hook 'kill-emacs-hook 'remember-theme-save)
 ;;
-;; Install with: `M-x package-install remember-theme`
+;; Install with: `M-x package-install RET remember-theme RET`
 
 ;;; Changelog:
+;; 20160509.1303
+;; * Use custom-available-themes instead of require to get a list of themes
+;; * Make remember-theme-read return a symbol instead of string.
 ;; 20160210.1644
 ;; * Rename to avoid inclusion in custom-available-themes
 ;; 20150308.1931
@@ -87,7 +90,7 @@
   "Return first line from `remember-theme-emacs-dot-file'."
   (with-temp-buffer
     (insert-file-contents remember-theme-emacs-dot-file)
-    (car (split-string (buffer-string) "\n" t))))
+    (intern (car (split-string (buffer-string) "\n" t)))))
 
 ;;;###autoload
 (defun remember-theme-save ()
@@ -116,8 +119,7 @@ Any currently loaded themes will be disabled and the theme named in
 If no `remember-theme-emacs-dot-file' file exists the operation is skipped."
   (when (file-exists-p remember-theme-emacs-dot-file)
     (mapc 'disable-theme custom-enabled-themes)
-    (let* ((theme-name (remember-theme-read))
-           (theme-symbol (intern theme-name)))
+    (let* ((theme-symbol (remember-theme-read)))
       (unless (member theme-symbol custom-enabled-themes)
         (custom-available-themes))
       (load-theme theme-symbol))
